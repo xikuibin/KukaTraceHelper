@@ -1,5 +1,5 @@
 
-Usage: DIAdemConverter.py [-h] [-f FILE | -d DIR]
+Usage: DIAdemConvert.py [-h] [-f FILE | -d DIR]
 
 DIAdem converter for KUKA trace 
 V 1.0 2023/09/06
