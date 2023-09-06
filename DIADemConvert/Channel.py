@@ -1,4 +1,5 @@
 import numpy as np
+import os
 from common import *
 
 CHANNEL_DATA_BEGIN = '#BEGINCHANNELHEADER'
@@ -106,7 +107,7 @@ class ChannelHeader():
 
 
 
-def readExplicitBlockData(chheader):
+def readExplicitBlockData(chheader, datadir):
     '''ONLY support real64 type now'''
 
     assert chheader.ChannelType == 'EXPLIZIT'
@@ -116,7 +117,7 @@ def readExplicitBlockData(chheader):
     cnt = int(chheader.NumberOfValues)
     pos = int(chheader.Pointer1stValue) - 1 #in DIADem  the file position numbers starts at 1
 
-    chdatafile = chheader.SourceFile
+    chdatafile = os.path.join(datadir, chheader.SourceFile)
 
     alldata = np.fromfile(chdatafile, dtype=ChannelDataTypes[chheader.DataType]['dtype'])
     # print(alldata.shape)
@@ -155,13 +156,13 @@ def generateImplicitData(chheader):
     
     return chdata, chDesc 
 
-def readChannelData(channels):
+def readChannelData(channels, datadir):
     lstchdata = []
     lstchdesc = []
     for ch in channels:
         if ch.ChannelType == 'EXPLIZIT' and 'BLOCK' == ch.StorageMethod:
             pass
-            chdata, chDesc = readExplicitBlockData(ch)
+            chdata, chDesc = readExplicitBlockData(ch, datadir)
             lstchdata.append(chdata)
             lstchdesc.append(chDesc)
         elif ch.ChannelType == 'IMPLIZIT':

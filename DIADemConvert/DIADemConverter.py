@@ -1,8 +1,7 @@
 '''
 
-DIADem converter for KUKA trace
-V 1.0 2022/11/26
-
+DIAdem converter for KUKA trace
+V 1.0 2023/09/06
 
 '''
 
@@ -16,7 +15,7 @@ import numpy as np
 # dict Channel Header
 from common import *
 from GeneralHeader import *
-from ChannelHeader import *
+from Channel import *
 
 
 def readDIAdemHeaders(lns):
@@ -84,10 +83,11 @@ def processHeaderFile(headerFilePath):
 
 
 def processTraceFile(tracefile):
+    datadir = os.path.split(tracefile)[0]
     ghd, chs = processHeaderFile(tracefile)
 
     print("Read channel data ..., channel count=", len(chs))
-    alldata, lstchdesc = readChannelData(chs)
+    alldata, lstchdesc = readChannelData(chs, datadir)
     print("result channel count:", len(lstchdesc))
 
     pathbase = os.path.splitext(tracefile)[0]
@@ -110,29 +110,37 @@ def processTraceDir(traceDir):
     
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    group = parser.add_mutually_exclusive_group(required=True)
+    group = parser.add_mutually_exclusive_group()
 
     group.add_argument('-f',
                         '--file',
-                        help='trace dat file to be processed.')
+                        help='trace .dat file to be processed.')
     group.add_argument('-d',
                         '--dir',
                         help='trace data directory to be processed')
 
     args = parser.parse_args()
-    print(args)
+    print("command line args", args)
     #print(args.file, args.dir)
     if args.file:
         processTraceFile(args.file)
     elif args.dir:
         processTraceDir(args.dir)
+    else:
+        parser.print_help()
     
 if __name__ == '__main__':
     main()
     pass
 
-# headerFileName = '.\\20230831-18-18-44_NextGenDrive#6.dat'
+# headerFileName = 'testdir\\20230831-18-18-44_NextGenDrive#6.dat'
 # processTraceFile(headerFileName)
 
-# headerDir = ".\\"
+# headerFileName = '20230831-18-18-44_NextGenDrive#6.dat'
+# processTraceFile(headerFileName)
+
+# headerDir = "testdir"
+# processTraceDir(headerDir)
+
+# headerDir = ""
 # processTraceDir(headerDir)

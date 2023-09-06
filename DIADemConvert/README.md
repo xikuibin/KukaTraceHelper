@@ -1,11 +1,12 @@
 
-Usage: DIADemConverter.py [-h] [-f FILE | -d DIR]
+Usage: DIAdemConverter.py [-h] [-f FILE | -d DIR]
 
-DIADem converter for KUKA trace V 1.0 2022/11/26
+DIAdem converter for KUKA trace 
+V 1.0 2023/09/06
 
 optional arguments:
   -h, --help            show this help message and exit
-  -f FILE, --file FILE  trace dat file to be processed.
+  -f FILE, --file FILE  trace .dat file to be processed.
   -d DIR, --dir DIR     trace data directory to be processed
 
 
